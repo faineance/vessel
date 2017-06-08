@@ -56,7 +56,6 @@ downloadLayer token path name digest = do
 
 extractLayer :: FilePath -> FilePath -> App ()
 extractLayer layerPath imageRoot = do
-  $(logInfoSH) ["-x", "-f", layerPath, "-C", imageRoot]
   liftIO (createDirectoryIfMissing True imageRoot)
   liftIO (createProcess (proc "tar" ["-x", "-f", layerPath, "-C", imageRoot]))
   -- liftIO (Tar.extract imageRoot layerPath)
