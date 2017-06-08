@@ -7,14 +7,16 @@ import           Options.Applicative
 import           Options.Applicative.Text
 import           System.Directory
 import           System.FilePath
-import           System.Posix.User
+
 
 import           Config
 import           Registry
 import           Vessel
 
-args :: Parser Config
-args = Config
+
+
+args :: Parser Args
+args = Args
       <$> textArgument (metavar "IMAGE" <> help "Image name")
       <*> textArgument (metavar "ARGS" <> help "Image args")
       <*> switch
@@ -28,7 +30,10 @@ isRoot = fmap (== 0) getRealUserID
 
 
 main :: IO ()
-main = flip runApp vessel =<< execParser opts
+main = do
+  a <- execParser opts
+  cfg <- getConfig a
+  runApp cfg vessel
   where
     opts = info (args <**> helper)
       ( fullDesc
