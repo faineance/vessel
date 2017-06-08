@@ -1,2 +1,2 @@
 # vessel
-Toy container runtime, capable of running docker images
+Container runtime, capable of downloading and running docker images
