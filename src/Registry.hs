@@ -56,7 +56,6 @@ downloadLayer token path name digest = do
 
 extractLayer :: FilePath -> FilePath -> App ()
 extractLayer layerPath imageRoot = do
-  liftIO (createDirectoryIfMissing True imageRoot)
   liftIO (createProcess (proc "tar" ["-x", "-f", layerPath, "-C", imageRoot]))
   -- liftIO (Tar.extract imageRoot layerPath)
   return ()
@@ -71,6 +70,7 @@ pull name tag = do
   token <- getAuthToken name
   appRoot <- getAppRoot
   let imagePath = appRoot </> T.unpack (name <> ":" <> tag)
+  let imageRoot = imagePath </> "root"
   alreadyDownloaded <- liftIO (doesDirectoryExist imagePath)
   if alreadyDownloaded
     then do
@@ -78,6 +78,7 @@ pull name tag = do
       return imagePath
     else do
       liftIO (createDirectoryIfMissing True imagePath)
+      liftIO (createDirectoryIfMissing True imageRoot)
       layers <- getLayers token name tag
       forM_ layers (\digest -> do
         let layerPath = imagePath </> T.unpack (T.drop 7 digest) <.> "tar"
