@@ -49,6 +49,7 @@ getConfig (Args imageName containerArgs useOverlayFS) = do
   let imagePath = appRoot </> "images" </> T.unpack (name <> ":" <> tag)
   let imageRoot = imagePath </> "root"
   let containerRoot = appRoot </> "containers" </> (unpack _name <> "-" <> "todo")
+  liftIO (createDirectoryIfMissing True containerRoot)
   authToken <- getAuthToken name
   return Config { name, tag, containerArgs, containerRoot, appRoot, imagePath, imageRoot, useOverlayFS, authToken}
 

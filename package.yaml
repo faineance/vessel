@@ -10,7 +10,7 @@ copyright:           2017 Author name here
 category:            Web
 extra-source-files:
 - README.md
-
+build-tools:         hsc2hs
 dependencies:
   - base >= 4.7 && < 5
   - wreq == 0.5.0.1
@@ -26,6 +26,7 @@ dependencies:
   - mtl == 2.2.1
   - optparse-applicative == 0.13.2.0
   - optparse-text == 0.1.1.0
+  - linux-mount == 0.2.0.1
 executables:
   vessel:
     source-dirs:      src

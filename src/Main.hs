@@ -25,9 +25,6 @@ args = Args
          <> help "Use overlayfs to build root fs ( more efficient since it only stores deltas, but requries root. )" )
 
 
-isRoot :: IO Bool
-isRoot = fmap (== 0) getRealUserID
-
 
 main :: IO ()
 main = do
