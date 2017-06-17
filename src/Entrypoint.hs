@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Main where
+module Entrypoint where
 import           Data.Bool
 import           Data.Semigroup           ((<>))
 import           Data.Text                as T
@@ -7,7 +7,8 @@ import           Options.Applicative
 import           Options.Applicative.Text
 import           System.Directory
 import           System.FilePath
-
+import System.Exit
+import Foreign.C
 
 import           Config
 import           Registry
@@ -24,10 +25,9 @@ args = Args
          <> short 'o'
          <> help "Use overlayfs to build root fs ( more efficient since it only stores deltas, but requries root. )" )
 
-
-
-main :: IO ()
-main = do
+foreign export ccall entrypoint :: IO ()
+entrypoint :: IO ()
+entrypoint = do
   a <- execParser opts
   cfg <- getConfig a
   runApp cfg vessel
@@ -36,13 +36,3 @@ main = do
       ( fullDesc
      <> progDesc "Download and run docker images"
      <> header "vessel - container runtime" )
-
-
-
---
--- main :: IO ()
--- main = do
---
---   -- let args =
---   directory <- isRoot >>= bool (getXdgDirectory XdgData "vessel") (return "/var/lib/vessel")
---   putStrLn directory

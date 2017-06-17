@@ -32,8 +32,10 @@ dependencies:
 
 executables:
   vessel:
-    source-dirs:      src
-    main:             Main.hs
-    ghc-options: -no-hs-main
+    source-dirs:
+      - src
+      - cbits
+    # ghc-options: -no-hs-main
+    main: main.c
     c-sources:
       cbits/main.c
